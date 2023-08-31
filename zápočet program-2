@@ -1,0 +1,654 @@
+def read_matrix():
+    """
+    Načte matici, která má n řádků. 
+    """
+    n = int(input("Počet řádků matice: "))
+
+    print("Matice: ")
+    matrix = []
+    for _ in range(n):
+        row = list(map(int, input().split()))
+        matrix.append(row)
+    
+    return matrix
+
+def print_matrix(matrix):
+    """
+    Vytiskne matici na výstup.
+    """
+    for row in matrix:
+        for i in row:
+            print(i, end=" ")
+        print()
+
+def gauss_elimination(matrix = None):
+    """
+    Aplikuje Gaussovskou eliminaci na matici.
+    """
+    if matrix is None:
+        matrix = read_matrix()
+    
+    n = len(matrix)
+    m = len(matrix[0])
+    
+    for i in range(n):
+        # Najde radek, ktery nema na i-te pozici 0
+        x = i
+        for j in range(i, n):
+            if matrix[j][i] != 0:
+                x = j
+                break
+
+        # Prohozeni radku s tim, ktery nema na i-te pozici 0
+        if x != 0:
+            matrix[x], matrix[i] = matrix[i], matrix[x]
+
+        # Znuluje hodnoty pod pivotem
+        for k in range(i+1, n):
+            if matrix[i][i] == 0:
+                break
+            factor = matrix[k][i] / matrix[i][i]
+            for j in range(i, m):
+                matrix[k][j] -= factor * matrix[i][j]
+
+    # Zmeni pivotove hodnoty kazdeho radku na 1 a hodnoty nad pivotem na nulu
+    a = min(m, n)
+    for i in range(a-1, -1, -1):
+        # Normalizujeme aktualni radek
+        pivot = matrix[i][i]
+        if pivot != 0:  # Eliminace deleni nulou
+            for j in range(m):
+                matrix[i][j] /= pivot
+        
+            # Znuluje hodnoty nad aktualnim pivotem
+            for k in range(i):
+                factor = matrix[k][i]
+                for j in range(m):
+                    matrix[k][j] -= factor * matrix[i][j]
+
+    return matrix
+
+
+def matrix_multiplication(A = None, B = None):
+    """
+    Nasobeni matic.
+    """
+    if A is None and B is None:
+        A = read_matrix()
+        B = read_matrix()
+
+    rows_A, cols_A = len(A), len(A[0])
+    rows_B, cols_B = len(B), len(B[0])
+
+    #kontrola kompatibilnosti rozmeru matice
+    if cols_A != rows_B:
+        raise ValueError("Matice nemaji kompatibilni rozmery pro nasobeni.")
+
+    result = [[0 for _ in range(cols_B)] for _ in range(rows_A)]
+
+    for i in range(rows_A):
+        for j in range(cols_B):
+            for k in range(cols_A):  # Ekvivaletne pak pro 'k in range(rows_B)'
+                result[i][j] += A[i][k] * B[k][j]
+
+    return result
+
+
+def determinant(matrix = None):
+    """
+    Vypocet determinantu matice.
+    """
+    if matrix is None:
+        matrix = read_matrix()
+
+    # Overeni ze jde o ctvercovou matici
+    if len(matrix) != len(matrix[0]):
+        raise ValueError("Matice neni ctvercova.")
+    
+    if len(matrix) == 1:
+        return matrix[0][0]
+
+    # Zakladni nastaveni pro matici 2x2
+    if len(matrix) == 2:
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    
+    det = 0
+    for c in range(len(matrix)):
+        submatrix = ([row[:c] + row[c+1:] for row in matrix[1:]]) #podmatice bez prvniho sloupce a c-teho radku
+        det += ((-1) ** c) * matrix[0][c] * determinant(submatrix)
+    return det
+    
+
+def rank(matrix = None):
+    """
+    Vypocet hodnosti matice.
+    """
+    if matrix is None:
+        matrix = read_matrix()
+
+    rank = 0
+
+    # Prevede matici do odstupnovaného tvaru 
+    matrix = gauss_elimination(matrix)
+    
+    # Spocita nenulove radky
+    for row in matrix:
+        if any(row):
+            rank += 1
+
+    return rank
+    
+
+def inverse(matrix = None):
+    """
+    Vypocet inverzni matice.
+    """
+    if matrix is None:
+        matrix = read_matrix()
+
+    # Kontroluje zda jde o ctvercovou matici
+    if len(matrix) != len(matrix[0]):
+        raise ValueError("Matice neni ctvercova.")
+    
+    n = len(matrix)
+    identity = [[float(i == j) for j in range(n)] for i in range(n)]
+    augmented = [row + id_row for row, id_row in zip(matrix, identity)]
+
+    #zkontroluje, zda je matice regularni
+    if determinant(matrix) == 0:
+        raise ValueError("Matice je singulární.")
+    
+    #pužije na matici gaussovu eliminaci
+    augmented = gauss_elimination(augmented)
+
+    # Extrahuje inverzni matici z rozsirene
+    inverse_matrix = [row[n:] for row in augmented]
+
+    return inverse_matrix
+
+
+def null_space(matrix = None):
+    """
+    Vypocte bazi nuloveho prostoru matice.
+    """
+    if matrix is None:
+        matrix = read_matrix()
+
+    # Kontroluje zda neni matice prazdna
+    if len(matrix) == 0:
+        raise ValueError("Matice nema zadny radek.")
+
+    # Pouzije Gaussovu eliminaci pro nalezeni redukovaneho radkoveho tvaru
+    rref_matrix = gauss_elimination(matrix)
+    
+    # Identifikuje pivotni sloupce
+    pivot_cols = [row.index(1) for row in rref_matrix if 1 in row]
+    
+
+    # Identifikuje ne-pivotni sloupce
+    non_pivot_cols = [i for i in range(len(matrix[0])) if i not in pivot_cols]
+
+    # Extrahuje bazi nuloveho prostoru
+    basis = []
+    for col in non_pivot_cols:
+        vector = [0] * len(matrix[0])
+        vector[col] = 1
+        for i, j in enumerate(pivot_cols):
+            vector[j] = -rref_matrix[i][col]
+        basis.append(vector)
+
+    return basis
+
+
+def eigen_values(matrix = None):
+    """
+    Vypocet vlastnich cisel matice.
+    """
+    
+    if matrix is None:
+        matrix = []
+        for _ in range(2):
+            row = list(map(int, input().split()))
+            matrix.append(row)
+
+    # Kontroluje zda jde o ctvercovou matici
+    if len(matrix) != len(matrix[0]):
+        raise ValueError("Matice neni ctvercova.")
+    
+    n = len(matrix)
+
+    # Jednoduchy polynomicky vypocet pro typicky polynom (pro jednoduchost omezeno na velikost 2x2)
+    if n == 2:
+        x = matrix[0][0] + matrix[1][1]
+        det = determinant(matrix)
+        # lambda^2 - x*lambda + det = 0
+        vlastni_c1 = (x + (x**2 - 4*det)**0.5) / 2
+        vlastni_c2 = (x - (x**2 - 4*det)**0.5) / 2
+        return [vlastni_c1, vlastni_c2]
+    
+    # Pro vetsi matice je treba pouzit slozitejsi metody, napr. QR algoritmus.
+    raise ValueError("Tato implementace podporuje pouze matice 2x2.")
+    
+
+def eigen_vectors(matrix = None):
+
+    if matrix is None:
+        matrix = []
+        for _ in range(2):
+            row = list(map(int, input().split()))
+            matrix.append(row)
+
+    # Kontroluje zda jde o ctvercovou matici
+    if len(matrix) != len(matrix[0]):
+        raise ValueError("Matice neni ctvercova.")
+    
+    n = len(matrix)
+    if n != 2:
+        raise ValueError("Tato implementace podporuje pouze matice 2x2.")
+    
+    # Ziskani vlastnich cisel
+    eigenvalues = eigen_values(matrix)
+    
+    eigenvectors = []
+    for val in eigenvalues:
+        # Vytvoreni maticove rovnice (A - lambda*I) * v = 0
+        a_minus_lambda = [[matrix[i][j] - (val if i == j else 0) for j in range(n)] for i in range(n)]
+        
+        # Vypocet vlastnich vektoru pro 2x2 matice
+        if a_minus_lambda[0][0] == 0:
+            vector = [1, -a_minus_lambda[1][0] / a_minus_lambda[1][1]]
+        else:
+            vector = [-a_minus_lambda[0][1] / a_minus_lambda[0][0], 1]
+        eigenvectors.append(vector)
+    
+    return eigenvectors
+
+
+def diagonalization(matrix = None):
+    """
+    Diagonalizace matice.
+    """
+
+    if matrix is None:
+        matrix = []
+        for _ in range(2):
+            row = list(map(int, input().split()))
+            matrix.append(row)
+
+    # Kontroluje zda jde o ctvercovou matici
+    if len(matrix) != len(matrix[0]):
+        raise ValueError("Matice neni ctvercova.")
+
+    e_vals = eigen_values(matrix)
+    e_vecs = eigen_vectors(matrix)
+
+    P = e_vecs
+    P_inv = inverse(P)
+    D = [[0 for _ in range(len(matrix))] for _ in range(len(matrix))]
+
+    for i in range(len(e_vals)):
+        D[i][i] = e_vals[i]
+
+    return P, D, P_inv
+    
+
+def transpose(matrix):
+    # Vrati transponovanou matici
+    return [[row[i] for row in matrix] for i in range(len(matrix[0]))]
+
+def moore_penrose_pseudoinverse(matrix = None):
+    """
+    Vypocet Moore-Penrose pseudoinverzni matice.
+    """
+
+    if matrix is None:
+        matrix = read_matrix()
+    
+    transposed = transpose(matrix)
+    
+    if len(matrix) > len(matrix[0]):
+        temp = matrix_multiplication(transposed, matrix)
+        return matrix_multiplication(inverse(temp), transposed)
+    else:
+        temp = matrix_multiplication(matrix, transposed)
+        return matrix_multiplication(transposed, inverse(temp))
+
+
+def gaussian_elimination_solve(A = None, b = None):
+    """
+    Reseni soustavy linearnich rovnic pomoci Gaussovy eliminace.
+    """
+
+    if A is None:
+        A = read_matrix()
+        print("Nyni zadejte pravou stranu: ")
+        b = list(map(int, input().split()))
+    
+    n = len(A)
+    m = len(A[0])
+    
+    if n != len(b):
+        raise ValueError("Matice A a vektor b nemaji kompatibilni rozmery.")
+    
+    if n != m:
+        raise ValueError("Matice A není ctvercova.")
+
+    # Rozsirena matice
+    for i in range(n):
+        A[i].append(b[i])
+    
+    # Primy pruchod
+    for i in range(n):
+        # Castecne pivotovani
+        max_row = i
+        for k in range(i+1, n):
+            if abs(A[k][i]) > abs(A[max_row][i]):
+                max_row = k
+        A[i], A[max_row] = A[max_row], A[i]
+
+        # Overeni, zda matice neni singularni
+        if A[i][i] == 0:
+            raise ValueError("Matice A je singularni.")
+        
+        # Vynulovani prvku pod pivotem
+        for k in range(i+1, n):
+            factor = A[k][i] / A[i][i]
+            for j in range(i, m+1):
+                A[k][j] -= factor * A[i][j]
+    
+    # Zpetny pruchod
+    x = [0] * n
+    for i in range(n-1, -1, -1):
+        x[i] = (A[i][-1] - sum([A[i][j] * x[j] for j in range(i+1, n)])) / A[i][i]
+    
+    return x
+
+
+def multidimensional_solution():
+    """
+    Najde bázi pro řešení lineárních soustav, které mají více řešení.
+    """
+    matrix = read_matrix()
+    print("Nyni zadejte pravou stranu: ")
+    b = list(map(int, input().split()))
+    n = len(matrix[0])
+
+    #rozsirena matice
+    for i in range(len(matrix)):
+        matrix[i].append(b[i])
+    
+    #aplikace Gaussovy eliminace na rozsirenou matici
+    rref_matrix = gauss_elimination(matrix)
+    
+    # Identifikuje pivotni sloupce
+    pivot_cols = [row.index(1) for row in rref_matrix if 1 in row]
+
+    # Identifikuje ne-pivotni sloupce
+    non_pivot_cols = [i for i in range(len(matrix[0])-1) if i not in pivot_cols]
+
+    basis = []
+    for col in non_pivot_cols:
+        vector = [0] * n
+        vector[col] = 1
+        for i, j in enumerate(pivot_cols):
+            vector[j] = rref_matrix[i][-1] - rref_matrix[i][col]
+        basis.append(vector)
+    vector1 = [0] * n
+    for i in pivot_cols:
+        vector1[i] = rref_matrix[i][-1]
+    basis.append(vector1)
+
+    return basis
+
+
+# Reseni neresitelnych SLR metodou nejmensich ctvercu
+def matrix_vector_multiply(A, v):
+    # Nasobi matici s vektorem
+    result = [0] * len(A)
+    for i in range(len(A)):
+        for j in range(len(A[0])):
+            result[i] += A[i][j] * v[j]
+    return result
+
+
+def least_squares_solution(A = None, b = None):
+    """
+    Reseni neresitelnych SLR metodou nejmensich ctvercu
+    """
+    if A is None:
+        A = read_matrix()
+        print("Nyni zadejte pravou stranu:")
+        b = list(map(int, input().split()))
+
+    if len(A) != len(b):
+        raise ValueError("Matice A a vektor b nemaji kompatibilni rozmery.")
+    
+
+    A_T = transpose(A)
+    A_T_A = matrix_multiplication(A_T, A)
+    A_T_b = matrix_vector_multiply(A_T, b)
+
+    x = gaussian_elimination_solve(A_T_A, A_T_b)
+    
+    return x
+
+
+class SparseMatrix:
+    def __init__(self, matrix = None):
+        """
+        Inicializuje ridkou matici z dane plne matice.
+        """
+        self.data = []
+        self.row_indices = []
+        self.col_indices = []
+        self.size = None
+        
+        for i, row in enumerate(matrix):
+            for j, element in enumerate(row):
+                if element != 0:
+                    self.data.append(element)
+                    self.row_indices.append(i)
+                    self.col_indices.append(j)
+        
+        if len(matrix) != 0:
+            self.size = [len(matrix), len(matrix[0])]
+
+    
+    def add_element(self, i, j, element):
+        """
+        Přidá prvek na danou pozici [i, j] v řídké matici.
+        """
+        if element != 0:
+            self.data.append(element)
+            self.row_indices.append(i)
+            self.col_indices.append(j)
+
+
+    def access(self, i, j):
+        """
+        Vraci prvek na pozici [i, j] v ridke matici.
+        """
+        for idx in range(len(self.row_indices)):
+            if self.row_indices[idx] == i and self.col_indices[idx] == j:
+                return self.data[idx]
+        return 0
+    
+    def convert_to_full_matrix(self):
+        """
+        Konvertuje ridkou matici zpet na plnou matici.
+        """
+        m, n = self.size
+        
+        matrix = [[0 for _ in range(n)] for _ in range(m)]
+        
+        for data, i, j in zip(self.data, self.row_indices, self.col_indices):
+            matrix[i][j] = data
+        
+        return matrix
+        
+
+    def multiply_sparse(self, sparse1=None, sparse2=None):
+        """
+        Vynásobí dvě řídké matice.
+        """
+        if sparse1 is None and sparse2 is None:
+            self.sparse1 = SparseMatrix(read_matrix())
+            self.sparse2 = SparseMatrix(read_matrix())
+
+        # kontrola kompatibilnosti rozmeru matice
+        if self.sparse1.size[1] != self.sparse2.size[0]:
+            raise ValueError("Matice nejsou kompatibilni")
+
+        # Vytvoří prázdnou řídkou matici se správnými rozměry
+        result = SparseMatrix([[0 for _ in range(self.sparse2.size[1])] for _ in range(self.sparse1.size[0])])
+
+        #prida soucin i-teho radku prvni a j-teho sloupce druhe matice na pozici (i, j)
+        for i in range(self.sparse1.size[0]):
+            for j in range(self.sparse2.size[1]):
+                dot_product = 0
+                for k in range(self.sparse1.size[1]):
+                    dot_product += self.sparse1.access(i, k) * self.sparse2.access(k, j)
+                
+                # Přidávají se pouze nenulové prvky
+                if dot_product != 0: 
+                    result.add_element(i, j, dot_product)
+
+        
+        # Matice se převede zpět do původního tvaru
+        return result.convert_to_full_matrix()
+
+
+    def det_sparse(self, matrix = None):
+        """
+        Najde determinant řídké matice.
+        """
+        self.matrix = matrix
+
+        # kontrola, zda je matice čtvercová
+        if self.size[1] != self.size[0]:
+            raise ValueError("Determinant lze spočítat pouze pro čtvercovou matici")
+
+        size = self.size[1]
+        if size == 1:
+            return self.access(0, 0)
+
+        # determinant matice 2x2 je ad-bc
+        if size == 2:
+            return self.access(0, 0) * self.access(1, 1) - self.access(1, 0) * self.access(0, 1)
+
+        det_value = 0
+
+        for i in range(len(self.col_indices)):
+            if self.col_indices[i] == 0:
+                row = self.row_indices[i]
+                a = (-1) ** row
+                b = self.data[i]
+
+                # Vytvoření podmatice bez prvního sloupce a i-tého řádku
+                submatrix = SparseMatrix([[0 for _ in range(size - 1)] for _ in range(size - 1)])
+                for j in range(size):   
+                    for k in range(1, size):
+                        if j < row:
+                            if self.access(j, k) != 0:
+                                submatrix.add_element(j, k - 1, self.access(j, k))
+                        elif j > row:
+                            if self.access(j, k) !=0:
+                                submatrix.add_element(j - 1, k - 1, self.access(j, k))
+                
+                det_value += a * b * submatrix.det_sparse()
+
+        return det_value
+
+
+
+    def rank_sparse(self, matrix = None):
+        """
+        Spočítá hodnost řídké matice.
+        """
+        if matrix is None:
+            self.matrix = SparseMatrix(read_matrix())
+
+        #spocte nenulove sloupce
+        cols = len(set(self.matrix.col_indices))
+
+        #spocte nenulove radky
+        rows = len(set(self.matrix.row_indices))
+
+        #funkce vrati mensi z techto hodnot
+        return min(cols, rows)
+    
+
+# Importujte všechny potřebné funkce nebo třídy
+def main():
+    print("Kterou operaci si přejete použít?")
+    answer = input()  # Přečtěte vstup od uživatele
+
+    if answer == "nasobeni":
+        result = matrix_multiplication()
+        print("Součin matic:")
+        print_matrix(result)
+    elif answer == "determinant":
+        result = determinant()
+        print("Determinant matice:", result)
+    elif answer == "hodnost":
+        result = rank()
+        print("Hodnost matice:", result)
+    elif answer == "inverze":
+        result = inverse()
+        print("Inverze matice:")
+        print_matrix(result)
+    elif answer == "jadro":
+        result = null_space()
+        print("Baze jadra matice:")
+        for i in result:
+            print(i)
+    elif answer == "vlastni cisla":
+        result = eigen_values()
+        print("Vlastni cisla matice:")
+        for i in result:
+            print(i, end = " ")
+            print()
+    elif answer == "vlastni vektory":
+        result = eigen_vectors()
+        print("Vlastni vektory matice:")
+        for i in result:
+            print(i, end = " ")
+            print()
+    elif answer == "diagonalizace":
+        result = diagonalization()
+        print("Matice vlastnich vektoru:")
+        print_matrix(result[0])
+        print("Diagonalni matice s vlastnimi cisly:")
+        print_matrix(result[1])
+        print("Inverzni matice k matici vlastnich vektoru:")
+        print_matrix(result[2])
+    elif answer == "pseudoinverze":
+        result = moore_penrose_pseudoinverse()
+        print("Pseudoinverzní matice:")
+        print_matrix(result)
+    elif answer == "reseni slr":
+        result = gaussian_elimination_solve()
+        print("Reseni soustavy:", result)
+    elif answer == "metoda ctvercu":
+        result = least_squares_solution()
+        print("Reseni soustavy:", result)
+    elif answer == "reseni slr 2":
+        result = multidimensional_solution()
+        print("Baze reseni soustavy:")
+        for i in result:
+            print(i)
+    elif answer == "nasobeni rm":
+        result = SparseMatrix([]).multiply_sparse()
+        print("Soucin ridkych matic:")
+        print_matrix(result)
+    elif answer == "determinant rm":
+        result = SparseMatrix(read_matrix()).det_sparse()
+        print("Determinant ridke matice:", result)
+    elif answer == "hodnost rm":
+        result = SparseMatrix([]).rank_sparse()
+        print("Hodnost ridke matice:", result)
+    else:
+        print("Neplatná volba operace")
+        return
+
+main()
