@@ -54,7 +54,7 @@ Vstup je matice. Algoritmus spočívá v postupném eliminování prvků pod dia
 Tato funkce načte dvě matice ze vstupu a výstupem je jejich součin. První dvě smyčky (i a j) procházejí řádky a sloupce výsledné matice, zatímco vnitřní smyčka (k) provádí skutečné násobení a sčítání.
 Ošetření případných chyb:
 ValueError: Matice nemaji kompatibilni rozmery pro nasobeni.
-##### *V. Funnkce **`determinan(matrix = None)`***
+##### *V. Funkce **`determinan(matrix = None)`***
 Vstupem je čtvercová matice a výstupem je hodnota int nebo float, určující determinant matice.
 Funkce determinant používá rekurzivní expanzi podle menších hodnot, známou jako Laplaceův rozvoj (podle sloupce). Hlavní logika spočívá v tom, že se determinant vypočítá rozkladem matice na menší podmatice (menší o jednu řadu a jeden sloupec) a následně se rekurzivně spočítá determinant takto získaných menších matic.
 Ošetření případných chyb: 
@@ -62,7 +62,7 @@ ValueError: Matice neni ctvercova.
 ##### *VI. Funkce **`rank(matrix = None)`***
 Vstupem je matice a výstupem je hodnota int udávající hodnost matice.
 Funkce rank() vypočítá hodnost matice, tzn. kolik nezávislých řádků nebo sloupců matice obsahuje. Za použití Gaussovy eliminace redukuje matici do odstupňované formy. V této podobě se nulové řádky nacházejí na konci matice. Výsledná hodnost je počet nenulových řádků.
-##### *VII. Funkce **`inverse(matrix = None)`
+##### *VII. Funkce **`inverse(matrix = None)`***
 Vstupem je matice, kterou chceme invertovat. Výstupem je inverzní matice. Je zde použita Gaussova- Jordanova eliminace. Proces zahrnuje vytvoření rozšířené matice kombinací původní a jednotkové matice a postupné transformování původní části matice do jednotkové, zatímco jednotková část se mění na inverzní matici.
 Ošetření případných chyb:
 ValueError: Matice není čtvercová.
@@ -119,7 +119,7 @@ Přidá prvek na danou pozici [i, j] v řídké matici. Vstupem jsou indexy prvk
 Vstupem jsou dvě čísla určující po řadě index řádku a sloupce v matici a výstupem je prvek na této pozici.
 ##### *XXI. Funkce **`convert_to_full_matrix(self)`***
 Výstupem této funkce je plná matice.
-##### XXII. Funkce `multiply_sparse(self = None, sparse1 = None, sparse2 = None)`
+##### *XXII. Funkce **`multiply_sparse(self = None, sparse1 = None, sparse2 = None)`***
 Tato funkce provádí násobení dvou řídkých matic. Algoritmus využívá slovníky pro rychlý přístup k nenulovým prvkům. Výstupem je součin těchto matic.
 ##### *XXIII. Funkce **`det_sparse(self, matrix = None)`***
 Vstupem této funkce je řídká matice. Výstupem hodnota jejího determinantu. Funkce opět využívá Laplaceův rozvoj podle sloupce.
