@@ -2,35 +2,35 @@
 ## Uživatelská dokumentace
 Vážení uživatelé,
 tento program vám umožní provádět různé operace s maticemi, včetně násobení matic, výpočtu determinantu, určení hodnosti matice a mnoho dalšího. Následující seznam popisuje jednotlivé operace, které můžete vykonávat pomocí tohoto programu:
-### **1. Násobení matic**
+#### **1. Násobení matic**
 Tuto operaci spustíte zadáním “násobeni” do programu. Program vás požádá, abyste zadali dvě matice, které chcete násobit a následně vám zobrazí výsledek násobení těchto dvou matic.
-### **2. Determinant matice**
+#### **2. Determinant matice**
 Tuto operaci spustíte zadáním “determinant” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete vypočítat determinant a následně zobrazí vypočtený determinant matice.
-### **3. Hodnost matice**
+#### **3. Hodnost matice**
 Tuto operaci spustíte zadáním “hodnost” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete určit hodnost a následně vám zobrazí hodnost matice.
-### **4. Inverzní matice**
+#### **4. Inverzní matice**
 Tuto operaci spustíte zadáním “inverze” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete vypočítat inverzi a následně vám zobrazí inverzi matice.
-### **5. Jádro matice**
+#### **5. Jádro matice**
 Tuto operaci spustíte zadáním “jadro” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete najít jádro a následně vám zobrazí bázi jádra matice.
-### **6. Vlastní čísla matice 2x2**
+#### **6. Vlastní čísla matice 2x2**
 Tuto operaci spustíte zadáním “vlastni cisla” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete vypočítat vlastní čísla a následně vám zobrazí vypočetená vlastní čísla matice.
-### **7. Vlastní vektory matice 2x2**
+#### **7. Vlastní vektory matice 2x2**
 Tuto operaci spustíte zadáním “vlastni vektory” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete určit vlastní vektroy a následně vám zobrazí vypočtené vlastní vektory.
-### **8. Diagonalizace matice 2x2**
+#### **8. Diagonalizace matice 2x2**
 Tuto operaci spustíte zadáním “diagonalizace” do programu. Program vás požádá, abyste zadali matici, kterou chcete diagonalizovat. Program vám následně zobrazí matici vlastních vektorů, diagonální matici s vlastními čísly a inverzní matici vlastních vektorů.
-### **9. Moore_penroseova pseudoinverze matice**
+#### **9. Moore_penroseova pseudoinverze matice**
 Tuto operaci spustíte zadáním “pseudoinverze” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete určit pseudoinverzi a následně vám zobrazí pseudoinverzi matice.
-### **10. Řešení soustavy lineárních rovnic**
+#### **10. Řešení soustavy lineárních rovnic**
 Tuto operaci spustíte zadáním “reseni slr” do programu. Program vás požádá, abyste zadali matici soustavy rovnic a pravou stranu této soustavy a následně vám zobrazí řešení soustavy.
-### **11. Řešenísoustavysvíceproměnnými**
+#### **11. Řešenísoustavysvíceproměnnými**
 Tuto operaci spustíte zadáním “reseni slr 2” do programu. Program vás požádá, abyste zadali matici soustavy rovnic a pravou stranu této soustavy. Program vám následně zobrazí bázi řešení soustavy.
-### **12. Metoda nejmenších čtverců**
+#### **12. Metoda nejmenších čtverců**
 Tuto operaci spustíte zadáním “metoda ctvercu” do programu. Program vás požádá, abyste zadali matici soustavy rovnic a pravou stranu této soustavy. Následně vám zobrazí řešení soustavy lineárních rovnic pomocí metody nejmenších čtverců.
-### **13. Násobení řídkých matic**
+#### **13. Násobení řídkých matic**
 Tuto operaci spustíte zadáním “nasobeni rm” do programu. Program vás požádá, abyste zadali dvě řídké matice, které chcete násobit, a následně vám zobrazí výsledek násobení těchto dvou řídkých matic.
-### **14. Determinant řídké matice**
+#### **14. Determinant řídké matice**
 Tuto operaci spustíte zadáním “determinant rm” do programu. Program vás požádá, abyste zadali řídkou matici, pro kterou chcete vypočítat determinant. Následně vám zobrazí vypočtený determinant řídké matice.
-### **15. Hodnost řídké matice**
+#### **15. Hodnost řídké matice**
 Tuto operaci spustíte zadáním “hodnost rm” do programu. Program vás požádá, abyste zadali řídkou matici, pro kterou chcete určit hodnost a následně zobrazí hodnost řídké matice.
 ### **Jak používat program**
 1. Spusťte program v Pythonu.
