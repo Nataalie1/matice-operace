@@ -1,6 +1,6 @@
 # matice-operace
 ## Uživatelská dokumentace
- tento program vám umožní provádět různé operace s maticemi, včetně násobení matic, výpočtu determinantu, určení hodnosti matice a mnoho dalšího. Následující seznam popisuje jednotlivé operace, které můžete vykonávat pomocí tohoto programu:
+tento program vám umožní provádět různé operace s maticemi, včetně násobení matic, výpočtu determinantu, určení hodnosti matice a mnoho dalšího. Následující seznam popisuje jednotlivé operace, které můžete vykonávat pomocí tohoto programu:
 ### **1. Násobení matic**
 Tuto operaci spustíte zadáním “násobeni” do programu. Program vás požádá, abyste zadali dvě matice, které chcete násobit a následně vám zobrazí výsledek násobení těchto dvou matic.
 ### **2. Determinant matice**
