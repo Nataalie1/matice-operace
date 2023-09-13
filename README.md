@@ -42,102 +42,88 @@ Tuto operaci spustíte zadáním “hodnost rm” do programu. Program vás pož
 
 ## Programátorská dokumentace
 Program je navržen jako jednoduchá aplikace napsaná v jazyce Python. Je rozdělen do několika funkcí, které provádějí specifické operace lineární algebry. Uživatel má možnost volit, kterou operaci chce provést, a poté zadává vstupní data prostřednictvím standardního vstupu (klávesnice). V celém programu jsou matice reprezentovány jako seznamy seznamů. V celém programu jsou datové struktury jako seznamy seznamů, slovníky a datové typy jako integer a float požívány pro reprezentaci matic a výsledků výpočtů.
-*I. Funkce **`read_matrix()`***
-*II. Funkce **`print_matrix(matrix)`***
+### Funkce pro operace s maticemi
+##### *I. Funkce **`read_matrix()`***
+Načte číslo, které udá počet řádků matice, poté čte jednotlivé řádky matice, kde uživatel zadá čísla oddělená mezerami. Výsledkem je matice ve formě sezamu seznamů. 
+##### *II. Funkce **`print_matrix(matrix)`***
 Tato funkce vytiskne matici na výstup. Prochází řádky matice a vypisuje jednotlivé prvky oddělené mezerami.
-*III. Funkce **`gauss_elimination(matrix = None)`***
+##### *III. Funkce **`gauss_elimination(matrix = None)`***
 Aplikuje Gaussovskou eliminaci na matici pro operace jako výpočet determinantu, výpočet inverze matice a řešení soustav lineárních rovnic.
 Vstup je matice. Algoritmus spočívá v postupném eliminování prvků pod diagonálou, aby se dostala matice do odstupňovaného tvaru. Poté změní hodnoty pivotů, tedy prvních nenulových prvků v každém řádku na 1 a hodnoty nad pivotem vynuluje. Výstupem je matice v odstupňovaném tvaru.
-*IV. Funkce **`matrix_multiplication(A = None, B = None)`***
+##### *IV. Funkce **`matrix_multiplication(A = None, B = None)`***
 Tato funkce načte dvě matice ze vstupu a výstupem je jejich součin. První dvě smyčky (i a j) procházejí řádky a sloupce výsledné matice, zatímco vnitřní smyčka (k) provádí skutečné násobení a sčítání.
 Ošetření případných chyb:
 ValueError: Matice nemaji kompatibilni rozmery pro nasobeni.
-*V. Funnkce **`determinan(matrix = None)`***
+##### *V. Funnkce **`determinan(matrix = None)`***
 Vstupem je čtvercová matice a výstupem je hodnota int nebo float, určující determinant matice.
 Funkce determinant používá rekurzivní expanzi podle menších hodnot, známou jako Laplaceův rozvoj (podle sloupce). Hlavní logika spočívá v tom, že se determinant vypočítá rozkladem matice na menší podmatice (menší o jednu řadu a jeden sloupec) a následně se rekurzivně spočítá determinant takto získaných menších matic.
 Ošetření případných chyb: 
 ValueError: Matice neni ctvercova.
-*VI. Funkce **`rank(matrix = None)`***
+##### *VI. Funkce **`rank(matrix = None)`***
 Vstupem je matice a výstupem je hodnota int udávající hodnost matice.
 Funkce rank() vypočítá hodnost matice, tzn. kolik nezávislých řádků nebo sloupců matice obsahuje. Za použití Gaussovy eliminace redukuje matici do odstupňované formy. V této podobě se nulové řádky nacházejí na konci matice. Výsledná hodnost je počet nenulových řádků.
-*VII. Funkce **`inverse(matrix = None)`
+##### *VII. Funkce **`inverse(matrix = None)`
 Vstupem je matice, kterou chceme invertovat. Výstupem je inverzní matice. Je zde použita Gaussova- Jordanova eliminace. Proces zahrnuje vytvoření rozšířené matice kombinací původní a jednotkové matice a postupné transformování původní části matice do jednotkové, zatímco jednotková část se mění na inverzní matici.
 Ošetření případných chyb:
 ValueError: Matice není čtvercová.
 ValueError: Matice je singulární a nemá inverzi.
-*VIII. Fukce **`null_space(matrix = None)`***
+##### *VIII. Fukce **`null_space(matrix = None)`***
 Vstupem je matice, ke které hledáme jádro a výstupem báze jádra matice. Nulový prostor je definován jako množina všech vektorů, které po vynásobení maticí dávají nulový vektor.
 Hlavní algoritmy a datové struktury:
 Použití Gaussovy eliminace k nalezení redukovaného řádkového echelonového tvaru (RREF) matice. Identifikace pivotních a nepivotních sloupců.
 Ošetření případných chyb:
 ValueError: Matice nemá žádný řádek.
-*IX. Funkce **`eigen_values(matrix = None)`***
+##### *IX. Funkce **`eigen_values(matrix = None)`***
 Vstupem je 2x2 matice, pro kterou chceme najít vlastní čísla a výstupem je seznam vlastních čísel, tzn. hodnot, které umožnují, aby matice mohla být diagonalizována, a to vytvořením a řešením charakteristického polynomu. Aktuální implementace je omezena na matice 2x2 a vypočítává vlastní čísla přímo z determinantu.
 Ošetření případných chyb: ValueError: Matice neni ctvercova.
-*X. Funkce **`eigen_vectors(matrix = None)`***
+##### *X. Funkce **`eigen_vectors(matrix = None)`***
 Vstupem je matice 2x2, pro kterou chceme najít vlastní vektory a výstupem je seznam vlastních vektorů matice, tzn. matice vektorů, které se při násobení maticí "natáhnou" nebo "stlačí" pouze v jednom směru. Výpočet je založen na řešení maticové rovnice kde 'A' je matice, λ je vlastní číslo a 'v' je hledaný vlastní vektor.
 Ošetření případných chyb: ValueError: Matice není čtvercová.
-*XI. Funkce **`diagonalization(matrix = None)`***
+##### *XI. Funkce **`diagonalization(matrix = None)`***
 Vstupem je čtvercová matice, kterou chceme diagonalizovat. Funkce diagonalization() provede diagonalizaci dané čtvercové matice a vrací tři matice: matici vlastních vektoru P, diagonální matici D s vlastními čísly a inverzní matici p_inv.
 Hlavní algoritmy a datové struktury:
 Výpočet vlastních čísel a vlastních vektorů matice. Výpočet inverzní matice.
 Případné ošetření chyb: ValueError: Matice není čtvercová.
-Funkce `transpose(matrix)`
+##### *XII. Funkce **`transpose(matrix)`***
 Vstupem je matice, kterou chceme transponovat a výstupem transponovaná matice.
-VIII.
-IX.
-X.
-XI.
-XII.
-
-XIII.
-Funkce `moore_penrose_pseudoinverse(matrix = None)`
-Vstupem je matice, pro kterou chceme zjistit pseudoinverzní matici a výstupem je daná pseudoinverzní
-matice, která se používá pro řešení problému regrese, kdy tradiční inverzní matice neexistuje.
+##### *XIII. Funkce **`moore_penrose_pseudoinverse(matrix = None)`***
+Vstupem je matice, pro kterou chceme zjistit pseudoinverzní matici a výstupem je daná pseudoinverzní matice, která se používá pro řešení problému regrese, kdy tradiční inverzní matice neexistuje.
 Hlavní algoritmy a datové struktury:
 Výpočet pseudoinverzní matice využívá násobení matic a inverzní matici.
 Ošetření případných chyb:
 ValueError: Matice nemá žádný řádek nebo sloupec.
-Funkce pro řešení soustav lineárních rovnic
-Funkce `gaussian_elimination_solve(A = None, b = None)`
+### Funkce pro řešení soustav lineárních rovnic
+##### *XIV. Funkce **`gaussian_elimination_solve(A = None, b = None)`***
 Vstupem je matice soustavy lineárních rovnic a vektor pravých stran. Funkce gaussian_elimination_solve() řeší soustavu lineárních rovnic pomocí Gaussovy eliminace. Nejprve provádí přímý průchod, který konvertuje matici na horní trojúhelníkovou formu. Poté se provádí zpětný průchod, který vypočítá výsledné hodnoty proměnných.
 Hlavní algoritmy a datové struktury:
 Částečné pivotování pro výběr řádku s největším prvkem jako pivot. Rozšíření matice pro uložení pravých stran rovnic.
 Ošetření případných chyb:
 ValueError: Matice A a vektor b nemaji kompatibilni rozmery. ValueError: Matice A neni ctvercova.
 ValueError: Matice A je singularni.
-XIV.
-XV. Funkce `multidimensional_solution()`
+##### *XV. Funkce **`multidimensional_solution()`***
 Funkce `multidimensional_solution()` hledá bázi pro řešení lineárních soustav, které mají více řešení. Vstupem funkce je matice soustavy a pravá strana soustavy. Identifikuje pivotní sloupce pomocí Gaussovy eliminace na rozšířené matici a identifikuje ne-pivotní sloupce. Vytváří bázi pro více řešení soustavy z ne-pivotních sloupců a pivotních sloupců. Funkce vrací bázi všech řešení soustavy.
-XVI.
-XVII. Funkce `least_squares_solution(A = None, b = None)`
-Funkce `matrix_vector_multiply(A, v)`
+##### *XVI.Funkce **`matrix_vector_multiply(A, v)`***
 Vstupem je matice A a vektor v. Výstupem je vektor, který je součinem matice A s vektorem v.
+##### *XVII. Funkce **`least_squares_solution(A = None, b = None)`***
 Vstupem je matice soustavy lineárních rovnic, které mají více rovnic než proměnných a vektor pravé strany rovnice. Výstupem je vektor určující řešení pomoci metody nejmenších čtverců. Funkce využívá transponování matice, násobení matic a řešení soustav pomocí Gaussovy eliminace.
 Ošetření případných chyb:
 ValueError: Matice A a vektor b nemaji kompatibilni rozmery.
-Funkce pro řídké matice (Sparse Matrices)
-Třída SparseMatrices
+### Funkce pro řídké matice (Sparse Matrices)
+##### Třída SparseMatrices
 Třída SparseMatrix poskytuje metody pro práci s řídkými maticemi. Výhodou ukládání v řídkém formátu je úspora paměti, protože ukládáme pouze nenulové prvky a jejich indexy. Obsahuje tyto metody:
-
-XVIII. Funkce `__init__(self, matrix = None)`
-Inicializuje řídkou matici z dané plné matice. Řídké matice jsou tedy v celé třídě reprezentovány
-slovníkem.
-Funkce `add_element(self, i, j, element)`
+##### *XVIII. Funkce **`__init__(self, matrix = None)`***
+Inicializuje řídkou matici z dané plné matice. Řídké matice jsou tedy v celé třídě reprezentovány slovníkem.
+##### *XIX. Funkce **`add_element(self, i, j, element)`***
 Přidá prvek na danou pozici [i, j] v řídké matici. Vstupem jsou indexy prvku matice a daný prvek.
-Funkce `access(self, i, j)`
-Vstupem jsou dvě čísla určující po řadě index řádku a sloupce v matici a výstupem je prvek na této
-pozici.
-XIX. XX.
-XXI.
-XXII. Funkce `multiply_sparse(self = None, sparse1 = None, sparse2 = None)`
-XXIV.
-Laplaceův rozvoj podle sloupce.
-Funkce `rank_sparse(self, matrix = None)`
-Vstupem je matice a výstupem její hodnost. Funkce hledá hodnost matice tak, že spočítá počet nenulových řádků a počet nenulových sloupců matice. Hodnost matice je pak určena jako menší z těchto dvou počtů.
-Funkce `convert_to_full_matrix(self)` Výstupem této funkce je plná matice.
+##### *XX. Funkce **`access(self, i, j)`***
+Vstupem jsou dvě čísla určující po řadě index řádku a sloupce v matici a výstupem je prvek na této pozici.
+##### *XXI. Funkce **`convert_to_full_matrix(self)`***
+Výstupem této funkce je plná matice.
+##### XXII. Funkce `multiply_sparse(self = None, sparse1 = None, sparse2 = None)`
 Tato funkce provádí násobení dvou řídkých matic. Algoritmus využívá slovníky pro rychlý přístup k nenulovým prvkům. Výstupem je součin těchto matic.
-XXIII. Funkce `det_sparse(self, matrix = None)`
-Vstupem této funkce je řídká matice. Výstupem hodnota jejího determinantu. Funkce opět využívá
-XXV. Funkce `main()`
+##### *XXIII. Funkce **`det_sparse(self, matrix = None)`***
+Vstupem této funkce je řídká matice. Výstupem hodnota jejího determinantu. Funkce opět využívá Laplaceův rozvoj podle sloupce.
+##### *XXIV. Funkce **`rank_sparse(self, matrix = None)`***
+Vstupem je matice a výstupem její hodnost. Funkce hledá hodnost matice tak, že spočítá počet nenulových řádků a počet nenulových sloupců matice. Hodnost matice je pak určena jako menší z těchto dvou počtů.
+##### *XXV. Funkce **`main()`***
 Tato hlavní funkce programu umožňuje uživateli provádět různé operace s maticemi. Uživatel má možnost vybrat z několika operací, jako je násobení matic, výpočet determinantu, výpočet hodnosti matice, inverze matice a další. Tato funkce zpracovává vstup od uživatele, provádí požadovanou operaci a výsledky vypisuje na standardní výstup.
