@@ -1,13 +1,13 @@
 # matice-operace
-##Uživatelská dokumentace
+## Uživatelská dokumentace
  tento program vám umožní provádět různé operace s maticemi, včetně násobení matic, výpočtu determinantu, určení hodnosti matice a mnoho dalšího. Následující seznam popisuje jednotlivé operace, které můžete vykonávat pomocí tohoto programu:
-###**1. Násobení matic**
+### **1. Násobení matic**
 Tuto operaci spustíte zadáním “násobeni” do programu. Program vás požádá, abyste zadali dvě matice, které chcete násobit a následně vám zobrazí výsledek násobení těchto dvou matic.
-###**2. Determinant matice**
+### **2. Determinant matice**
 Tuto operaci spustíte zadáním “determinant” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete vypočítat determinant a následně zobrazí vypočtený determinant matice.
-###**3. Hodnost matice**
+### **3. Hodnost matice**
 Tuto operaci spustíte zadáním “hodnost” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete určit hodnost a následně vám zobrazí hodnost matice.
-###**4. Inverzní matice**
+### **4. Inverzní matice**
 Tuto operaci spustíte zadáním “inverze” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete vypočítat inverzi a následně vám zobrazí inverzi matice.
 ###**5. Jádro matice**
 Tuto operaci spustíte zadáním “jadro” do programu. Program vás požádá, abyste zadali matici, pro kterou chcete najít jádro a následně vám zobrazí bázi jádra matice.
